@@ -1,0 +1,24 @@
+{
+  "index_patterns": ["pfsense-ai-training-*"],
+  "template": {
+    "mappings": {
+      "properties": {
+        "src_ip": {"type": "ip"},
+        "dst_ip": {"type": "ip"},
+        "src_port": {"type": "integer"},
+        "dst_port": {"type": "integer"},
+        "action": {"type": "keyword"},
+        "direction": {"type": "keyword"},
+        "proto": {"type": "keyword"},
+        "traffic_type": {"type": "keyword"},
+        "block_candidate": {"type": "boolean"},
+        "ai_should_analyze": {"type": "boolean"},
+        "src_is_private": {"type": "boolean"},
+        "dst_is_private": {"type": "boolean"},
+        "length": {"type": "integer"},
+        "tcp_flags": {"type": "keyword"},
+        "tags": {"type": "keyword"}
+      }
+    }
+  }
+}

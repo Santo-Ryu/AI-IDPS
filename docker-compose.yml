@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks: [elknet]
+    restart: unless-stopped
+    # THÊM MỚI: Kiểm tra sức khỏe (Healthcheck)
+    # Service khác sẽ chờ cho đến khi lệnh curl trả về thành công
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
+      interval: 10s    # Kiểm tra mỗi 10 giây
+      timeout: 5s      # Timeout mỗi lần kiểm tra
+      retries: 10      # Thử lại 10 lần trước khi báo lỗi (cho ES khoảng 100s để boot)
+      start_period: 30s # Bắt đầu kiểm tra sau 30s khởi động
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.2
+    container_name: kibana
+    ports:
+      - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYS10b2tlbjo4VktUcV9peVNLdVBCS1p3YVVubERR
+    networks: [elknet]
+    restart: unless-stopped
+    depends_on:
+      elasticsearch:
+          condition: service_healthy
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.15.2
+    container_name: logstash
+    ports:
+      - 5140:5140/udp
+      - 5140:5140/tcp
+    volumes:
+      - ./logstash/pipeline/patterns/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - ./logstash/pipeline/patterns:/usr/share/logstash/patterns:ro
+    environment:
+      - LS_JAVA_OPTS=-Xmx1g -Xms1g
+      - XPACK_MONITORING_ENABLED=false # Tắt monitoring nếu không cần thiết để giảm tải kết nối tới ES
+    networks: [elknet]
+    restart: unless-stopped
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  # ai-backend:
+  #   image: python:3.11-slim
+  #   container_name: ai-idps-backend
+  #   restart: always
+  #   command: bash -c "pip install -r requirements.txt --no-cache && python main.py"
+  #   networks: [elknet]
+
+volumes:
+  esdata:
+
+networks:
+  elknet:
+    driver: bridge

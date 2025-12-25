@@ -1,0 +1,55 @@
+# ============================================
+# Cấu hình chính của hệ thống AI-IDPS pfSense
+# File này chứa các thiết lập chung, không nhạy cảm
+# Có thể commit lên Git một cách an toàn
+# Path: config/config.yaml
+# ============================================
+
+# Cài đặt chung của ứng dụng
+app:
+  name: "AI-IDPS pfSense"          # Tên ứng dụng
+  version: "1.0.0"                 # Phiên bản hiện tại
+  debug: false                     # Bật/tắt chế độ debug (nên để false ở production)
+
+# Đường dẫn dữ liệu trong dự án
+data:
+  elk_logs: "data/raw/elk_logs.json"              # File logs thô từ ELK (dùng để test)
+  training_logs: "data/raw/training.json"         # File logs dùng để huấn luyện model
+  cleaned_logs: "data/processed/cleaned_logs.pkl" # File dữ liệu đã làm sạch (pickle format)
+  sample_logs: "data/sample/sample_logs.json"     # File logs mẫu nhỏ để demo/test nhanh
+
+# Cấu hình mô hình Machine Learning
+model:
+  type: "IsolationForest"          # Loại mô hình phát hiện bất thường
+  contamination: 0.07              # 
+  n_estimators: 200                # Giữ nguyên, đủ tốt
+  max_samples: 256                 # Bắt buộc set cứng 256 → tối ưu cho anomaly detection
+  random_state: 42                 # Seed cố định để kết quả có thể tái lập
+  n_jobs: -1                       # Sử dụng tất cả CPU cores để huấn luyện
+
+# Đường dẫn lưu trữ mô hình và các đối tượng xử lý
+paths:
+  model_path: "models/latest_model.pkl"         # File lưu mô hình đã huấn luyện
+  processor_path: "models/latest_processor.pkl" # File lưu đối tượng DataProcessor (nếu cần)
+  engineer_path: "models/latest_engineer.pkl"   # File lưu đối tượng FeatureEngineer (nếu có)
+  output_dir: "models"                          # Thư mục chứa tất cả các file mô hình
+
+# Cấu hình Elasticsearch (chỉ phần không nhạy cảm)
+elk-module:
+  INDEX_PATTERN: 'pfsense-ipv4*'       # Pattern các index chứa log pfSense
+  query_size: 10000                # Số logs tối đa lấy về mỗi lần query
+  scroll_timeout: "5m"             # Thời gian giữ scroll context (5 phút)
+
+# Cấu hình pfSense (chỉ phần cố định)
+pfsense:
+  blocked_alias: "AI_IDPS_Blocked" # Tên Alias trên pfSense dùng để chứa IP bị chặn tự động
+
+# Cài đặt chế độ phát hiện thời gian thực
+realtime:
+  fetch_interval: 5                     # Khoảng thời gian (giây) để lấy logs mới từ ELK
+  batch_size: 200                      # Số logs lấy về mỗi lần
+  window_size: 60                       # Thời gian gom logs (giây)
+  slide_interval: 20                    # Tần suất phân tích (giây)
+  min_logs_per_ip: 5                    # Tối thiểu logs để analyze
+  auto_block: true                      # Tự động block IP anomaly
+  block_severity: ["CRITICAL", "HIGH", "MEDIUM"]  # Severity nào thì block

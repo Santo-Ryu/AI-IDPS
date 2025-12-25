@@ -1,0 +1,170 @@
+{
+  "@timestamp": [
+    "2025-12-24T07:06:23.296Z"
+  ],
+  "@version": [
+    "1"
+  ],
+  "@version.keyword": [
+    "1"
+  ],
+  "ack": [
+    "1150781315"
+  ],
+  "ack.keyword": [
+    "1150781315"
+  ],
+  "action": [
+    "block"
+  ],
+  "action.keyword": [
+    "block"
+  ],
+  "data_length": [
+    "0"
+  ],
+  "data_length.keyword": [
+    "0"
+  ],
+  "dir": [
+    "in"
+  ],
+  "dir.keyword": [
+    "in"
+  ],
+  "dst_ip": [
+    "34.36.137.203"
+  ],
+  "dst_ip.keyword": [
+    "34.36.137.203"
+  ],
+  "dst_port": [
+    443
+  ],
+  "event.original": [
+    "<134>1 2025-12-24T14:06:23.296102+07:00 pfSense.home.arpa filterlog 98188 - - 63,,,1000001470,em1,match,block,in,4,0x0,,64,0,0,DF,6,tcp,40,192.168.81.132,34.36.137.203,43020,443,0,A,,1150781315,2664,,"
+  ],
+  "event.original.keyword": [
+    "<134>1 2025-12-24T14:06:23.296102+07:00 pfSense.home.arpa filterlog 98188 - - 63,,,1000001470,em1,match,block,in,4,0x0,,64,0,0,DF,6,tcp,40,192.168.81.132,34.36.137.203,43020,443,0,A,,1150781315,2664,,"
+  ],
+  "flags": [
+    "DF"
+  ],
+  "flags.keyword": [
+    "DF"
+  ],
+  "host.ip": [
+    "10.0.1.1"
+  ],
+  "host.ip.keyword": [
+    "10.0.1.1"
+  ],
+  "hostname": [
+    "pfSense.home.arpa"
+  ],
+  "hostname.keyword": [
+    "pfSense.home.arpa"
+  ],
+  "id": [
+    0
+  ],
+  "ip_version": [
+    "4"
+  ],
+  "ip_version.keyword": [
+    "4"
+  ],
+  "length": [
+    40
+  ],
+  "offset": [
+    "0"
+  ],
+  "offset.keyword": [
+    "0"
+  ],
+  "pid": [
+    "98188"
+  ],
+  "pid.keyword": [
+    "98188"
+  ],
+  "program": [
+    "filterlog"
+  ],
+  "program.keyword": [
+    "filterlog"
+  ],
+  "proto_id": [
+    "6"
+  ],
+  "proto_id.keyword": [
+    "6"
+  ],
+  "proto_name": [
+    "tcp"
+  ],
+  "proto_name.keyword": [
+    "tcp"
+  ],
+  "real_interface": [
+    "em1"
+  ],
+  "real_interface.keyword": [
+    "em1"
+  ],
+  "reason": [
+    "match"
+  ],
+  "reason.keyword": [
+    "match"
+  ],
+  "rule_number": [
+    63
+  ],
+  "src_ip": [
+    "192.168.81.132"
+  ],
+  "src_ip.keyword": [
+    "192.168.81.132"
+  ],
+  "src_port": [
+    43020
+  ],
+  "tcp_flags": [
+    "A"
+  ],
+  "tcp_flags.keyword": [
+    "A"
+  ],
+  "tos": [
+    "0x0"
+  ],
+  "tos.keyword": [
+    "0x0"
+  ],
+  "tracker": [
+    1000001470
+  ],
+  "ttl": [
+    "64"
+  ],
+  "ttl.keyword": [
+    "64"
+  ],
+  "type": [
+    "pfsense"
+  ],
+  "type.keyword": [
+    "pfsense"
+  ],
+  "window": [
+    "2664"
+  ],
+  "window.keyword": [
+    "2664"
+  ],
+  "_id": "5HEuT5sBUUVlxrwVJ9Vb",
+  "_index": "pfsense-ipv4-2025.12.24",
+  "_score": null
+}

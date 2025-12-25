@@ -1,0 +1,16 @@
+# Environment
+.env
+
+# Large data files
+sample_logs.json
+training.log
+elasticsearch_format.json
+
+# Or ignore all data & logs folders
+data/
+logs/
+
+ssh_key_save
+ssh_key_save.pub
+
+venv/
